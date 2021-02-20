@@ -107,7 +107,7 @@
     var get = state.GOT;
     var root = get[0];
     return new Promise(function(resolve, reject) {
-      document.body.removeAttribute("data-menu");
+      document.body.classList.remove('body-nav');
       if (root) {
         if (root === "post") {
           resolve(state);
