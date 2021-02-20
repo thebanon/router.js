@@ -1,14 +1,14 @@
 String.prototype.router = async function (a) {
+  var path = this.toString();
+  var paths = rout.e(path); console.log({ paths });
+  var root = paths.GOT[0];
+  
+  document.body.dataset.page = paths.page;
+  document.body.dataset.path = paths.path;
+  
   //auth.user() ?
   //document.body.dataset.uid = auth.user().uid :
   //(document.body.dataset.uid ? document.body.removeAttribute('uid') : null);
-  var path = this.toString();
-  var paths = rout.e(path);
-  var root = paths.GOT[0];
-
-  console.log({ paths });
-  document.body.dataset.page = paths.page;
-  document.body.dataset.path = paths.path;
 
   return new Promise(function (resolve, reject) {
     if (path) {
@@ -18,7 +18,6 @@ String.prototype.router = async function (a) {
 
           var m = window.location.origin;
           var url = new URL(state.path, m);
-          //console.log({url});
           var search = url.search;
           var path = url.pathname.replace(/\/?$/, "/");
 
