@@ -1,0 +1,63 @@
+body { margin: 0; font-family: Arial; }
+
+/*HEADER*/
+body > header { display: flex; display: -webkit-flex; justify-content: space-between; padding: 10px; position: fixed; top: 0; background: #333; width: 100%; color: white; height: 50px; line-height: 50px; padding: 0; margin: 0; z-index: 12; }
+/*HEADER*/
+
+main { padding: 70px 20px 20px; }
+
+/*FOOTER*/
+.body-nav > nav { translate: 0; }
+.body-nav > :not(nav) { filter: blur(10px); }
+.body-nav:before { content: ''; position:fixed; display: block; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1234; }
+nav { position: fixed; top: 0px; font-size: 24px; height: 100%; width: 240px; transform: translateX(-100%); left: 0; background: #777; color: white; z-index:12345; }
+.body-nav nav { transform: unset; }
+nav { transition: 0.3s transform; }
+nav ul { margin: 0;white-space: nowrap; width: 100%; -webkit-appearance: none; padding: 0; font-size: 18px; line-height: 36px; }
+nav ul li { width: 20%; height: 50px; line-height 50px; display:block; -webkit-appearance: none; }
+nav ul li a { display: block; width: 100%; height: 36px; text-align: center; line-height: 36px; }
+/*FOOTER*/
+
+/*PAGES*/
+.page { display: none; }
+body[data-page="/"] .page[data-page="/"] { display: block; }
+body[data-page="/docs/"] .page[data-page="/docs/"] { display: block; }
+body[data-page="/about/"] .page[data-page="/user/"] { display: block; }
+/*PAGES*/
+
+/*POST*/
+.post { box-shadow: 0 0 10px; padding: 10px; margin-bottom: 20px; }
+/*POST*/
+
+.menu {
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  position: relative;
+  margin: 0;
+}
+.menu + * {
+  height: 50px;
+  margin-right: auto;
+}
+.menu + * + * {
+  height: 50px;
+  margin-left: auto;
+}
+
+
+/*ICONIC*/
+.icon.icon-hamburger {
+  width: 50%; height: 4px; background: white; position: absolute; top: 0; left: 0; right: 0; bottom: 0; margin: auto;
+}
+.icon.icon-hamburger:before,
+.icon.icon-hamburger:after {
+  content:'';display:block;width: 100%; height: 4px; background: white; position: absolute; top: 0; left: 0; right: 0; bottom: 0; margin: auto;
+}
+.icon.icon-hamburger:before {
+  top:-400%;
+}
+.icon.icon-hamburger:after {
+  bottom:-400%;
+}
+/*ICONIC*/
