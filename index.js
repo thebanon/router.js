@@ -12,7 +12,7 @@ String.prototype.router = async function (a) {
 
   return new Promise(function (resolve, reject) {
     if (path) {
-      view(path)
+      m.v ? m.v(path)
         .then((state) => {
           console.log(state.path);
 
@@ -43,7 +43,7 @@ String.prototype.router = async function (a) {
           //alert(404);
           console.log(404, e);
           reject(e);
-        });
+        }) : resolve(paths);
     } else {
       reject({ code: 400, message });
     }
