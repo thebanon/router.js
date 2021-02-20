@@ -63,7 +63,7 @@
     document.body.classList.add('load');
     document.body.dataset.page = '/';
     document.body.dataset.path = '/';    
-    document.boot.dataset.load = "ing";
+    dom.boot.dataset.load = "ing";
     /*Init*/
     
     pathname =
@@ -93,4 +93,28 @@
     });
     
   };
+  window.rout.ing = (GOT, n) => {
+    var root = GOT[0];
+    var m = GOT[n];
+    return (
+      m.includes("#") ||
+      (root === "post" && n === 1)
+    )
+  };
+
+  function view(path) {
+    var state = rout.e(path);
+    var get = state.GOT;
+    var root = get[0];
+    return new Promise(function(resolve, reject) {
+      document.body.removeAttribute("data-menu");
+      if (root) {
+        if (root === "post") {
+          resolve(state);
+        }
+      } else {
+        resolve(state);
+      }
+    });
+  }
 </script>
