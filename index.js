@@ -1,22 +1,26 @@
-String.prototype.router = async function(a) {
+String.prototype.router = async function (a) {
+  
+  //Dynamically store user authentication variables on the client
   //auth.user() ?
-  //document.body.dataset.uid = auth.user().uid :
-  //(document.body.dataset.uid ? document.body.removeAttribute('uid') : null);
+    //document.body.dataset.uid = auth.user().uid :
+    //(document.body.dataset.uid ? document.body.removeAttribute('uid') : null);
+  
   var path = this.toString();
   var paths = rout.e(path);
   var root = paths.GOT[0];
-  
-  console.log({paths});
+
+  console.log({ paths });
   document.body.dataset.page = paths.page;
   document.body.dataset.path = paths.path;
 
   return new Promise(function (resolve, reject) {
     if (path) {
       view(path)
-        .then((state) => { console.log(state.path);
-                          
+        .then((state) => {
+          console.log(state.path);
+
           var m = window.location.origin;
-          var url = new URL(state.path,m);
+          var url = new URL(state.path, m);
           //console.log({url});
           var search = url.search;
           var path = url.pathname.replace(/\/?$/, "/");
@@ -40,7 +44,7 @@ String.prototype.router = async function(a) {
         })
         .catch((e) => {
           //alert(404);
-          console.log(404,e);
+          console.log(404, e);
           reject(e);
         });
     } else {
@@ -60,7 +64,7 @@ window.rout.e = (state) => {
   if (GOT.length > 0) {
     do {
       var m = GOT[n];
-      if (window.rout.ing(GOT,n)) {
+      if (window.rout.ing(GOT, n)) {
         arr1[n] = "*";
       } else {
         arr1[n] = m;
@@ -77,7 +81,9 @@ window.rout.e = (state) => {
 };
 window.rout.es = {
   dir: (url, num, g = []) => {
-    url.split("/").forEach((a, i) => { g[i] = a; });
+    url.split("/").forEach((a, i) => {
+      g[i] = a;
+    });
     g[0] === "" ? g.shift() : null;
     g[g.length - 1] === "" ? g.pop() : null;
     return g;
@@ -86,4 +92,6 @@ window.rout.es = {
     return dir.length === 0 ? "/" : "/" + dir.join("/") + "/";
   }
 };
-window.rout.ing = (GOT,n) => { return false; } 
+window.rout.ing = (GOT, n) => {
+  return false;
+};
