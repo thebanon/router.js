@@ -1,0 +1,96 @@
+<boot data-path="/" id="boot"></boot>
+
+<header>
+  <span class="menu" data-menu="true">
+    <div class="icon icon-hamburger"></div>
+  </span>
+  <span>Javascript Router</span>
+  <span>
+    <div class="icon icon-inbox"></div>
+  </span>
+</header>
+
+<nav>
+  <ul>
+    <li><a data-href="/">Home</a></li>
+    <li><a data-href="/docs/">Docs</a></li>
+    <li><a data-href="/about/">About</a></li>
+  </ul>
+</nav>
+
+<main class='pages'>
+  <section class="page page-index" data-page="/" data-path="/">
+    <article>
+      <div class="post">
+        <header>
+          <h1>Router.js</h1>
+          <h2>A client-side routing library for the progressive web.</h2>
+        </header>
+        <section>
+          <p>Transform your frontend into a single-page application.</p>
+          <p>The History API enables a state-ful approach for routing application logic. Create dynamic sitemaps and handle errors gracefully with a promise-based phasing system. Learn more about generating dynamic sites with static content.</p>
+        </section>
+      </div>
+    </article>
+  </section>
+  <section class="page page-docs" data-page="/docs/" data-path="/docs/">
+    <article>
+      <div class="post">
+        Chain to a string.
+        <xmp><a onclick="'/'.router();"></a></xmp>
+      </div>
+      <div class="post">
+        Receive promise events throughout the routing process.
+        <xmp>
+          <script>
+            '/search/'.router().then(() => {
+              alert('Start searching.');
+            });
+          </script>
+        </xmp>
+      </div>
+    </article>
+  </section>
+</main>
+<script>
+  window.onload = (pathname) => {
+    
+    window.dom = {
+      "boot": document.getElementById('boot')
+    };
+    
+    /*Init*/ 
+    document.body.classList.add('load');
+    document.body.dataset.page = '/';
+    document.body.dataset.path = '/';    
+    document.boot.dataset.load = "ing";
+    /*Init*/
+    
+    pathname =
+      document.body.dataset && document.body.dataset.path ?
+      document.body.dataset.path :
+      "/";
+    
+    pathname.router().then(() => {
+        dom.boot.dataset.load = "ed";
+        document.onclick = (event) => {
+          var target = event.target;
+          var link = target.closest("[data-href]");
+          var href = link ? link.dataset.href : null;
+          if (href) {
+            console.log("href", href);
+            href.router();
+          }
+          if (target.closest("[data-menu]")) {
+            document.body.classList.add('body-nav');
+          }
+          if (target.tagName === "BODY") {
+            if (target.classList.contains('body-nav')) {
+              target.classList.remove('body-nav')
+            }
+          }
+        };
+    });
+    
+  };
+</script>
