@@ -1,10 +1,7 @@
 String.prototype.router = async function (a) {
-  
-  //Dynamically store user authentication variables on the client
   //auth.user() ?
-    //document.body.dataset.uid = auth.user().uid :
-    //(document.body.dataset.uid ? document.body.removeAttribute('uid') : null);
-  
+  //document.body.dataset.uid = auth.user().uid :
+  //(document.body.dataset.uid ? document.body.removeAttribute('uid') : null);
   var path = this.toString();
   var paths = rout.e(path);
   var root = paths.GOT[0];
