@@ -54,55 +54,48 @@
 </main>
 <script>
   window.onload = (pathname) => {
-    
+    /*Vars*/
     window.dom = {
       "boot": document.getElementById('boot')
     };
+    window.rout.ing = (GOT, n) => {
+      var root = GOT[0];
+      var m = GOT[n];
+      return (
+        m.includes("#") ||
+        (root === "post" && n === 1)
+      )
+    };
     
-    /*Init*/ 
+    /*Init*/
     document.body.classList.add('load');
     document.body.dataset.page = '/';
-    document.body.dataset.path = '/';    
-    dom.boot.dataset.load = "ing";
-    /*Init*/
-    
-    pathname =
-      document.body.dataset && document.body.dataset.path ?
-      document.body.dataset.path :
-      "/";
-    
-    pathname.router().then(() => {
-        dom.boot.dataset.load = "ed";
-        document.onclick = (event) => {
-          var target = event.target;
-          var link = target.closest("[data-href]");
-          var href = link ? link.dataset.href : null;
-          if (href) {
-            console.log("href", href);
-            href.router();
+    document.body.dataset.path = '/';
+    dom.boot.dataset.load = "ing"; 
+    document.getElementById('boot').dataset.path.router()
+      .then(() => {
+      dom.boot.dataset.load = "ed";
+      document.onclick = (event) => {
+        var target = event.target;
+        var link = target.closest("[data-href]");
+        var href = link ? link.dataset.href : null;
+        if (href) {
+          console.log("href", href);
+          href.router();
+        }
+        if (target.closest("[data-menu]")) {
+          document.body.classList.add('body-nav');
+        }
+        if (target.tagName === "BODY") {
+          if (target.classList.contains('body-nav')) {
+            target.classList.remove('body-nav')
           }
-          if (target.closest("[data-menu]")) {
-            document.body.classList.add('body-nav');
-          }
-          if (target.tagName === "BODY") {
-            if (target.classList.contains('body-nav')) {
-              target.classList.remove('body-nav')
-            }
-          }
-        };
+        }
+      };
     });
-    
   };
-  window.rout.ing = (GOT, n) => {
-    var root = GOT[0];
-    var m = GOT[n];
-    return (
-      m.includes("#") ||
-      (root === "post" && n === 1)
-    )
-  };
-
-  function view(path) {
+  window.m = {};
+  window.m.v = (path) => {
     var state = rout.e(path);
     var get = state.GOT;
     var root = get[0];
