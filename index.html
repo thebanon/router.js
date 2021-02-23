@@ -6,51 +6,51 @@ String.prototype.router = async function (a) {
   var paths = rout.e(path);
   var root = paths.GOT[0];
 
-  console.log('router:paths',{ paths });
+  console.log('router:paths', { paths });
   document.body.dataset.page = paths.page;
   document.body.dataset.path = paths.path;
 
   return new Promise(function (resolve, reject) {
     if (path) {
-      m && m.v ? m.v(path)
-        .then((state) => { //console.log(state.path,url);
+      m && m.v ? m.v(path).
+      then(state => {//console.log(state.path,url);
 
-          var m = window.location.origin;
-          var url = new URL(state.path, m);
-          var search = url.search;
-          var path = url.pathname.replace(/\/?$/, "/");
+        var m = window.location.origin;
+        var url = new URL(state.path, m);
+        var search = url.search;
+        var path = url.pathname.replace(/\/?$/, "/");
 
-          if (root) {
-            document.body.dataset.root = root;
-          } else {
-            document.body.removeAttribute("data-root");
-          }
+        if (root) {
+          document.body.dataset.root = root;
+        } else {
+          document.body.removeAttribute("data-root");
+        }
 
-          var hash = (url.hash ? url.hash : paths.page);
-          var state = (url.search ? url.search : window.location.search) + hash;
-          document.body.classList.contains("loading") ? document.body.classList.remove("loading") : null;
+        var hash = url.hash ? url.hash : paths.page;
+        var state = (url.search ? url.search : window.location.search) + hash;
+        document.body.classList.contains("loading") ? document.body.classList.remove("loading") : null;
 
-          if(window.location.protocol === "https:") {
-            var state = path+state;
-            history.pushState(state,document.head.find('title').textContent,state);
-            rout.es.push(state);
-          }
-          else if(window.location.protocol === "file:") {
-            localStorage.state = paths.path;
-            var title = document.head.find('title').textContent;
-            var state = '#'+paths.path;        
-            history.pushState(state,title,state); //console.log({hash,title});
-            rout.es.push(state);
-          }
-          
-          window.GET = paths.GOT;
-          resolve(paths);
-        })
-        .catch((e) => {
-          //alert(404);
-          console.log(404, e);
-          reject(e);
-        }) : resolve(paths);
+        if (window.location.protocol === "https:") {
+          var state = path + state;
+          history.pushState(state, document.head.querySelector('title').textContent, state);
+          rout.es.push(state);
+        } else
+        if (window.location.protocol === "file:") {
+          localStorage.state = paths.path;
+          var title = document.head.find('title').textContent;
+          var state = '#' + paths.path;
+          history.pushState(state, title, state); //console.log({hash,title});
+          rout.es.push(state);
+        }
+
+        window.GET = paths.GOT;
+        resolve(paths);
+      }).
+      catch(e => {
+        //alert(404);
+        console.log(404, e);
+        reject(e);
+      }) : resolve(paths);
     } else {
       reject({ code: 400, message });
     }
@@ -58,15 +58,15 @@ String.prototype.router = async function (a) {
 };
 
 window.rout = {};
-window.rout.e = (state) => {
+window.rout.e = state => {
   //console.log({state});
   var GOT = rout.ed.dir(state, 2);
   var n = 0,
-    arr1 = [],
-    arr2 = rout.ed.dir(state);
+  arr1 = [],
+  arr2 = rout.ed.dir(state);
   var root = GOT[0];
   if (GOT.length > 0) {
-    do {
+    do {if (window.CP.shouldStopExecution(0)) break;
       var m = GOT[n];
       if (window.rout.ing(GOT, n)) {
         arr1[n] = "*";
@@ -74,13 +74,13 @@ window.rout.e = (state) => {
         arr1[n] = m;
       }
       n++;
-    } while (n < GOT.length);
+    } while (n < GOT.length);window.CP.exitedLoop(0);
   }
   var data = {
     GOT: arr2,
     page: rout.ed.url(arr1),
-    path: rout.ed.url(rout.ed.dir(state.replace("#", ""), 0))
-  };
+    path: rout.ed.url(rout.ed.dir(state.replace("#", ""), 0)) };
+
   return data;
 };
 window.rout.ed = {
@@ -92,10 +92,10 @@ window.rout.ed = {
     g[g.length - 1] === "" ? g.pop() : null;
     return g;
   },
-  url: (dir) => {
+  url: dir => {
     return dir.length === 0 ? "/" : "/" + dir.join("/") + "/";
-  }
-};
+  } };
+
 window.rout.ing = (GOT, n) => {
   return false;
 };
