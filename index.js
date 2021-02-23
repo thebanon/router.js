@@ -1,20 +1,19 @@
 String.prototype.router = async function (a) {
-  var path = this.toString();
-  var paths = rout.e(path); console.log({ paths });
-  var root = paths.GOT[0];
-  
-  document.body.dataset.page = paths.page;
-  document.body.dataset.path = paths.path;
-  
   //auth.user() ?
   //document.body.dataset.uid = auth.user().uid :
   //(document.body.dataset.uid ? document.body.removeAttribute('uid') : null);
+  var path = this.toString();
+  var paths = rout.e(path);
+  var root = paths.GOT[0];
+
+  console.log({ paths });
+  document.body.dataset.page = paths.page;
+  document.body.dataset.path = paths.path;
 
   return new Promise(function (resolve, reject) {
     if (path) {
-      m.v ? m.v(path)
-        .then((state) => {
-          console.log(state.path);
+      m && m.v ? m.v(path)
+        .then((state) => { //console.log(state.path,url);
 
           var m = window.location.origin;
           var url = new URL(state.path, m);
@@ -27,14 +26,20 @@ String.prototype.router = async function (a) {
             document.body.removeAttribute("data-root");
           }
 
-          var state =
-            path +
-            (url.search ? url.search : window.location.search) +
-            (url.hash ? url.hash : window.location.hash);
-          document.body.classList.contains("loading")
-            ? document.body.classList.remove("loading")
-            : null;
-          //history.pushState(state,'Frontend Development Suite',state);
+          var hash = (url.hash ? url.hash : paths.page);
+          var state = (url.search ? url.search : window.location.search) + hash;
+          document.body.classList.contains("loading") ? document.body.classList.remove("loading") : null;
+
+          if(window.location.protocol === "https:") {
+            history.pushState(path+state,document.head.find('title').textContent,path+state);
+          }
+          else if(window.location.protocol === "file:") {
+            localStorage.state = hash;
+            var title = document.head.find('title').textContent;
+            console.log({hash,title});
+            history.pushState('#'+hash,title,'#'+hash);
+          }
+          
           window.GET = paths.GOT;
           resolve(paths);
         })
@@ -52,10 +57,10 @@ String.prototype.router = async function (a) {
 window.rout = {};
 window.rout.e = (state) => {
   //console.log({state});
-  var GOT = rout.es.dir(state, 2);
+  var GOT = rout.ed.dir(state, 2);
   var n = 0,
     arr1 = [],
-    arr2 = rout.es.dir(state);
+    arr2 = rout.ed.dir(state);
   var root = GOT[0];
   if (GOT.length > 0) {
     do {
@@ -70,12 +75,12 @@ window.rout.e = (state) => {
   }
   var data = {
     GOT: arr2,
-    page: rout.es.url(arr1),
-    path: rout.es.url(rout.es.dir(state.replace("#", ""), 0))
+    page: rout.ed.url(arr1),
+    path: rout.ed.url(rout.ed.dir(state.replace("#", ""), 0))
   };
   return data;
 };
-window.rout.es = {
+window.rout.ed = {
   dir: (url, num, g = []) => {
     url.split("/").forEach((a, i) => {
       g[i] = a;
@@ -91,3 +96,4 @@ window.rout.es = {
 window.rout.ing = (GOT, n) => {
   return false;
 };
+window.rout.es = [];
