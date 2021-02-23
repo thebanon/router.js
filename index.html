@@ -1,4 +1,100 @@
-<boot data-path="/" id="boot"></boot>
+
+
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+
+  <meta charset="UTF-8">
+  
+<link rel="apple-touch-icon" type="image/png" href="https://cpwebassets.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png" />
+<meta name="apple-mobile-web-app-title" content="CodePen">
+
+<link rel="shortcut icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico" />
+
+<link rel="mask-icon" type="" href="https://cpwebassets.codepen.io/assets/favicon/logo-pin-8f3771b1072e3c38bd662872f6b673a722f4b3ca2421637d5596661b4e2132cc.svg" color="#111" />
+
+
+  <title>CodePen - router.js</title>
+  
+  
+  
+  
+<style>
+body { margin: 0; font-family: Arial; }
+
+/*HEADER*/
+body > header { display: flex; display: -webkit-flex; justify-content: space-between; padding: 10px; position: fixed; top: 0; background: #333; width: 100%; color: white; height: 50px; line-height: 50px; padding: 0; margin: 0; z-index: 12; }
+/*HEADER*/
+
+main { padding: 70px 20px 20px; }
+
+/*FOOTER*/
+.body-nav > nav { translate: 0; }
+.body-nav > :not(nav) { filter: blur(10px); }
+.body-nav:before { content: ''; position:fixed; display: block; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1234; }
+nav { position: fixed; top: 0px; font-size: 24px; height: 100%; width: 240px; transform: translateX(-100%); left: 0; background: #777; color: white; z-index:12345; }
+.body-nav nav { transform: unset; }
+nav { transition: 0.3s transform; }
+nav ul { margin: 0;white-space: nowrap; width: 100%; -webkit-appearance: none; padding: 0; font-size: 18px; line-height: 36px; }
+nav ul li { width: 20%; height: 50px; line-height 50px; display:block; -webkit-appearance: none; }
+nav ul li a { display: block; width: 100%; height: 36px; text-align: center; line-height: 36px; }
+/*FOOTER*/
+
+/*PAGES*/
+.page { display: none; }
+body[data-page="/"] .page[data-page="/"] { display: block; }
+body[data-page="/docs/"] .page[data-page="/docs/"] { display: block; }
+body[data-page="/about/"] .page[data-page="/user/"] { display: block; }
+/*PAGES*/
+
+/*POST*/
+.post { box-shadow: 0 0 10px; padding: 10px; margin-bottom: 20px; }
+/*POST*/
+
+.menu {
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  position: relative;
+  margin: 0;
+}
+.menu + * {
+  height: 50px;
+  margin-right: auto;
+}
+.menu + * + * {
+  height: 50px;
+  margin-left: auto;
+}
+
+
+/*ICONIC*/
+.icon.icon-hamburger {
+  width: 50%; height: 4px; background: white; position: absolute; top: 0; left: 0; right: 0; bottom: 0; margin: auto;
+}
+.icon.icon-hamburger:before,
+.icon.icon-hamburger:after {
+  content:'';display:block;width: 100%; height: 4px; background: white; position: absolute; top: 0; left: 0; right: 0; bottom: 0; margin: auto;
+}
+.icon.icon-hamburger:before {
+  top:-400%;
+}
+.icon.icon-hamburger:after {
+  bottom:-400%;
+}
+/*ICONIC*/
+</style>
+
+  
+  
+  
+  
+
+</head>
+
+<body translate="no" >
+  <boot data-path="/" id="boot"></boot>
 
 <header>
   <span class="menu" data-menu="true">
@@ -111,3 +207,116 @@
     });
   }
 </script>
+  
+  
+      <script id="rendered-js" >
+String.prototype.router = async function (a) {
+  //auth.user() ?
+  //document.body.dataset.uid = auth.user().uid :
+  //(document.body.dataset.uid ? document.body.removeAttribute('uid') : null);
+  var path = this.toString();
+  var paths = rout.e(path);
+  var root = paths.GOT[0];
+
+  console.log('router:paths', { paths });
+  document.body.dataset.page = paths.page;
+  document.body.dataset.path = paths.path;
+
+  return new Promise(function (resolve, reject) {
+    if (path) {
+      m && m.v ? m.v(path).
+      then(state => {//console.log(state.path,url);
+
+        var m = window.location.origin;
+        var url = new URL(state.path, m);
+        var search = url.search;
+        var path = url.pathname.replace(/\/?$/, "/");
+
+        if (root) {
+          document.body.dataset.root = root;
+        } else {
+          document.body.removeAttribute("data-root");
+        }
+
+        var hash = url.hash ? url.hash : paths.page;
+        var state = (url.search ? url.search : window.location.search) + hash;
+        document.body.classList.contains("loading") ? document.body.classList.remove("loading") : null;
+
+        if (window.location.protocol === "https:") {
+          var state = path + state;
+          history.pushState(state, document.head.querySelector('title').textContent, state);
+          rout.es.push(state);
+        } else
+        if (window.location.protocol === "file:") {
+          localStorage.state = paths.path;
+          var title = document.head.find('title').textContent;
+          var state = '#' + paths.path;
+          history.pushState(state, title, state); //console.log({hash,title});
+          rout.es.push(state);
+        }
+
+        window.GET = paths.GOT;
+        resolve(paths);
+      }).
+      catch(e => {
+        //alert(404);
+        console.log(404, e);
+        reject(e);
+      }) : resolve(paths);
+    } else {
+      reject({ code: 400, message });
+    }
+  });
+};
+
+window.rout = {};
+window.rout.e = state => {
+  //console.log({state});
+  var GOT = rout.ed.dir(state, 2);
+  var n = 0,
+  arr1 = [],
+  arr2 = rout.ed.dir(state);
+  var root = GOT[0];
+  if (GOT.length > 0) {
+    do {if (window.CP.shouldStopExecution(0)) break;
+      var m = GOT[n];
+      if (window.rout.ing(GOT, n)) {
+        arr1[n] = "*";
+      } else {
+        arr1[n] = m;
+      }
+      n++;
+    } while (n < GOT.length);window.CP.exitedLoop(0);
+  }
+  var data = {
+    GOT: arr2,
+    page: rout.ed.url(arr1),
+    path: rout.ed.url(rout.ed.dir(state.replace("#", ""), 0)) };
+
+  return data;
+};
+window.rout.ed = {
+  dir: (url, num, g = []) => {
+    url.split("/").forEach((a, i) => {
+      g[i] = a;
+    });
+    g[0] === "" ? g.shift() : null;
+    g[g.length - 1] === "" ? g.pop() : null;
+    return g;
+  },
+  url: dir => {
+    return dir.length === 0 ? "/" : "/" + dir.join("/") + "/";
+  } };
+
+window.rout.ing = (GOT, n) => {
+  return false;
+};
+window.rout.es = [];
+    </script>
+
+  
+
+</body>
+
+</html>
+ 
