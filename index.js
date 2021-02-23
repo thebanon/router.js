@@ -6,7 +6,7 @@ String.prototype.router = async function (a) {
   var paths = rout.e(path);
   var root = paths.GOT[0];
 
-  console.log({ paths });
+  console.log('router:paths',{ paths });
   document.body.dataset.page = paths.page;
   document.body.dataset.path = paths.path;
 
@@ -34,10 +34,9 @@ String.prototype.router = async function (a) {
             history.pushState(path+state,document.head.find('title').textContent,path+state);
           }
           else if(window.location.protocol === "file:") {
-            localStorage.state = hash;
-            var title = document.head.find('title').textContent;
-            console.log({hash,title});
-            history.pushState('#'+hash,title,'#'+hash);
+            localStorage.state = paths.path;
+            var title = document.head.find('title').textContent;           
+            history.pushState('#'+paths.path,title,'#'+paths.path); //console.log({hash,title});
           }
           
           window.GET = paths.GOT;
