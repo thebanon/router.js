@@ -1,129 +1,102 @@
+String.prototype.router = async function (a) {
+  //auth.user() ?
+  //document.body.dataset.uid = auth.user().uid :
+  //(document.body.dataset.uid ? document.body.removeAttribute('uid') : null);
+  var path = this.toString();
+  var paths = rout.e(path);
+  var root = paths.GOT[0];
 
-<!DOCTYPE html>
-<html lang="en" >
-<head>
-  <meta charset="UTF-8">
-  <title>RouterJS</title>
-  <link rel="stylesheet" href="./index.css">
+  console.log('router:paths',{ paths });
+  document.body.dataset.page = paths.page;
+  document.body.dataset.path = paths.path;
 
-</head>
-<body>
-<!-- partial:index.partial.html -->
-<boot data-path="/" id="boot"></boot>
+  return new Promise(function (resolve, reject) {
+    if (path) {
+      m && m.v ? m.v(path)
+        .then((state) => { //console.log(state.path,url);
 
-<header>
-  <span class="menu" data-menu="true">
-    <div class="icon icon-hamburger"></div>
-  </span>
-  <span>Javascript Router</span>
-  <span>
-    <div class="icon icon-inbox"></div>
-  </span>
-</header>
+          var m = window.location.origin;
+          var url = new URL(state.path, m);
+          var search = url.search;
+          var path = url.pathname.replace(/\/?$/, "/");
 
-<nav>
-  <ul>
-    <li><a data-href="/">Home</a></li>
-    <li><a data-href="/docs/">Docs</a></li>
-    <li><a data-href="/about/">About</a></li>
-  </ul>
-</nav>
-
-<main class='pages'>
-  <section class="page page-index" data-page="/" data-path="/">
-    <article>
-      <div class="post">
-        <header>
-          <h1>Router.js</h1>
-          <h2>A client-side routing library for the progressive web.</h2>
-        </header>
-        <section>
-          <p>Transform your frontend into a single-page application.</p>
-          <p>The History API enables a state-ful approach for routing application logic. Create dynamic sitemaps and handle errors gracefully with a promise-based phasing system. Learn more about generating dynamic sites with static content.</p>
-        </section>
-      </div>
-    </article>
-  </section>
-  <section class="page page-docs" data-page="/docs/" data-path="/docs/">
-    <article>
-      <div class="post">
-        Chain to a string.
-        <xmp><a onclick="'/'.router();"></a></xmp>
-      </div>
-      <div class="post">
-        Receive promise events throughout the routing process.
-        <xmp>
-          <script>
-            '/search/'.router().then(() => {
-              alert('Start searching.');
-            });
-          </script>
-        </xmp>
-      </div>
-    </article>
-  </section>
-</main>
-<script>
-  window.onload = (pathname) => {
-    /*Vars*/
-    window.dom = {
-      "boot": document.getElementById('boot')
-    };
-    window.rout.ing = (GOT, n) => {
-      var root = GOT[0];
-      var m = GOT[n];
-      return (
-        m.includes("#") ||
-        (root === "post" && n === 1)
-      )
-    };
-    
-    /*Init*/
-    document.body.classList.add('load');
-    document.body.dataset.page = '/';
-    document.body.dataset.path = '/';
-    dom.boot.dataset.load = "ing"; 
-    document.getElementById('boot').dataset.path.router()
-      .then(() => {
-      dom.boot.dataset.load = "ed";
-      document.onclick = (event) => {
-        var target = event.target;
-        var link = target.closest("[data-href]");
-        var href = link ? link.dataset.href : null;
-        if (href) {
-          console.log("href", href);
-          href.router();
-        }
-        if (target.closest("[data-menu]")) {
-          document.body.classList.add('body-nav');
-        }
-        if (target.tagName === "BODY") {
-          if (target.classList.contains('body-nav')) {
-            target.classList.remove('body-nav')
+          if (root) {
+            document.body.dataset.root = root;
+          } else {
+            document.body.removeAttribute("data-root");
           }
-        }
-      };
-    });
-  };
-  window.m = {};
-  window.m.v = (path) => {
-    var state = rout.e(path);
-    var get = state.GOT;
-    var root = get[0];
-    return new Promise(function(resolve, reject) {
-      document.body.classList.remove('body-nav');
-      if (root) {
-        if (root === "post") {
-          resolve(state);
-        }
-      } else {
-        resolve(state);
-      }
-    });
-  }
-</script>
-<!-- partial -->
-  <script  src="./index.js"></script>
 
-</body>
-</html>
+          var hash = (url.hash ? url.hash : paths.page);
+          var state = (url.search ? url.search : window.location.search) + hash;
+          document.body.classList.contains("loading") ? document.body.classList.remove("loading") : null;
+
+          if(window.location.protocol === "https:") {
+            var state = path+state;
+            history.pushState(state,document.head.find('title').textContent,state);
+            rout.es.push(state);
+          }
+          else if(window.location.protocol === "file:") {
+            localStorage.state = paths.path;
+            var title = document.head.find('title').textContent;
+            var state = '#'+paths.path;        
+            history.pushState(state,title,state); //console.log({hash,title});
+            rout.es.push(state);
+          }
+          
+          window.GET = paths.GOT;
+          resolve(paths);
+        })
+        .catch((e) => {
+          //alert(404);
+          console.log(404, e);
+          reject(e);
+        }) : resolve(paths);
+    } else {
+      reject({ code: 400, message });
+    }
+  });
+};
+
+window.rout = {};
+window.rout.e = (state) => {
+  //console.log({state});
+  var GOT = rout.ed.dir(state, 2);
+  var n = 0,
+    arr1 = [],
+    arr2 = rout.ed.dir(state);
+  var root = GOT[0];
+  if (GOT.length > 0) {
+    do {
+      var m = GOT[n];
+      if (window.rout.ing(GOT, n)) {
+        arr1[n] = "*";
+      } else {
+        arr1[n] = m;
+      }
+      n++;
+    } while (n < GOT.length);
+  }
+  var data = {
+    GOT: arr2,
+    page: rout.ed.url(arr1),
+    path: rout.ed.url(rout.ed.dir(state.replace("#", ""), 0))
+  };
+  return data;
+};
+window.rout.ed = {
+  dir: (url, num, g = []) => {
+    url.split("/").forEach((a, i) => {
+      g[i] = a;
+    });
+    g[0] === "" ? g.shift() : null;
+    g[g.length - 1] === "" ? g.pop() : null;
+    return g;
+  },
+  url: (dir) => {
+    return dir.length === 0 ? "/" : "/" + dir.join("/") + "/";
+  }
+};
+window.rout.ing = (GOT, n) => {
+  return false;
+};
+window.rout.es = [];
