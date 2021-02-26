@@ -26,8 +26,7 @@ String.prototype.router = async function (a) {
             document.body.removeAttribute("data-root");
           }
 
-          var hash = (url.hash ? url.hash : paths.page);
-          var state = url.pathname + (url.search ? url.search : window.location.search) + hash;
+          var state = url.pathname + (url.search ? url.search : window.location.search) + (url.hash ? url.hash : ``);
           document.body.classList.contains("loading") ? document.body.classList.remove("loading") : null;
 
           if(window.location.protocol === "https:") {
