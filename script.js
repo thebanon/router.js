@@ -43,6 +43,12 @@ String.prototype.router = async function (a) {
             rout.es.push(state);
           }
           
+          $(document.querySelectorAll('.active[data-page]')).removeClass('active');
+          var page = document.body.find('[data-page="'+paths.page+'"]');
+          if(page) { 
+            page.classList.add('active');
+            page.dataset.path = paths.path;
+          }
           window.GET = paths.GOT;
           resolve(paths);
         })
