@@ -32,7 +32,7 @@ String.prototype.router = async function (a) {
 
           if(window.location.protocol === "https:") {
             var state = path+state;
-            history.pushState(state,document.head.find('title').textContent,state);
+            history.pushState(state,'',state);
             rout.es.push(state);
           }
           else if(window.location.protocol === "file:") {
@@ -43,8 +43,13 @@ String.prototype.router = async function (a) {
             rout.es.push(state);
           }
           
-          $(document.querySelectorAll('.active[data-page]')).removeClass('active');
-          var page = document.body.find('[data-page="'+paths.page+'"]');
+          var active = document.querySelectorAll('.active[data-page]');
+          if(active.length > 0) {
+            var a = 0; do {
+              active[a].classList.remove('active');
+            a++; } while(a < active.length);
+          }
+          var page = document.body.querySelector('[data-page="'+paths.page+'"]');
           if(page) { 
             page.classList.add('active');
             page.dataset.path = paths.path;
