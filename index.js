@@ -6,7 +6,7 @@ String.prototype.router = async function (a) {
   var paths = rout.e(path);
   var root = paths.GOT[0];
 
-  console.log('router:paths',{ paths });
+  //console.log('router:paths',{ paths });
   document.body.dataset.page = paths.page;
   document.body.dataset.path = paths.path;
 
@@ -18,7 +18,7 @@ String.prototype.router = async function (a) {
           var m = window.location.origin;
           var url = new URL(state.path, m);
           var search = url.search;
-          var path = url.pathname.replace(/\/?$/, "/");
+          var path = url.pathname.replace(/\/?$/, "/"); console.log({url});
 
           if (root) {
             document.body.dataset.root = root;
@@ -27,11 +27,10 @@ String.prototype.router = async function (a) {
           }
 
           var hash = (url.hash ? url.hash : paths.page);
-          var state = (url.search ? url.search : window.location.search) + hash;
+          var state = url.pathname + (url.search ? url.search : window.location.search) + hash;
           document.body.classList.contains("loading") ? document.body.classList.remove("loading") : null;
 
           if(window.location.protocol === "https:") {
-            var state = path+state;
             history.pushState(state,'',state);
             rout.es.push(state);
           }
