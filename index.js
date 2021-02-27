@@ -18,7 +18,7 @@ String.prototype.router = async function (a) {
           var m = window.location.origin;
           var url = new URL(state.path, m);
           var search = url.search;
-          var path = url.pathname.replace(/\/?$/, "/"); console.log({url});
+          var path = url.pathname.replace(/\/?$/, "/");
 
           if (root) {
             document.body.dataset.root = root;
@@ -36,21 +36,26 @@ String.prototype.router = async function (a) {
           else if(window.location.protocol === "file:") {
             localStorage.state = paths.path;
             var title = document.head.find('title').textContent;
-            var state = '#'+paths.path;        
+            var state = '#'+paths.path;
             history.pushState(state,title,state); //console.log({hash,title});
             rout.es.push(state);
           }
-          
+
           var active = document.querySelectorAll('.active[data-page]');
           if(active.length > 0) {
             var a = 0; do {
               active[a].classList.remove('active');
             a++; } while(a < active.length);
           }
-          var page = document.body.querySelector('[data-page="'+paths.page+'"]');
-          if(page) { 
+          var page =
+            document.body.querySelector('[data-path="'+paths.path+'"]') ?
+            document.body.querySelector('[data-path="'+paths.path+'"]') :
+            document.body.querySelector('[data-page="'+paths.page+'"]');
+
+          if(page) {
             page.classList.add('active');
             page.dataset.path = paths.path;
+            page.dataset.page = rout.e(paths.path).page;
           }
           window.GET = paths.GOT;
           resolve(paths);
