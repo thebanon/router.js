@@ -12,8 +12,8 @@ String.prototype.router = async function (a) {
 
   return new Promise(function (resolve, reject) {
     if (path) {
-      m && m.v ? m.v(path)
-        .then((state) => { //console.log(state.path,url);
+      if(m && m.v) {
+        m.v(path).then((state) => { //console.log(state.path,url);
 
           var m = window.location.origin;
           var url = new URL(state.path, m);
@@ -64,7 +64,21 @@ String.prototype.router = async function (a) {
           //alert(404);
           console.log(404, e);
           reject(e);
-        }) : resolve(paths);
+        });
+      } else {
+        if(window.location.protocol === "https:") {
+          history.pushState(state,'',state);
+          rout.es.push(state);
+        }
+        else if(window.location.protocol === "file:") {
+          localStorage.state = paths.path;
+          var title = document.head.find('title').textContent;
+          var state = '#'+paths.path;
+          history.pushState(state,title,state); //console.log({hash,title});
+          rout.es.push(state);
+        }
+
+      };
     } else {
       reject({ code: 400, message });
     }
