@@ -41,7 +41,7 @@ String.prototype.router = async function (a) {
             rout.es.push(state);
           }
 
-          var active = document.querySelectorAll('page.active');
+          var active = document.querySelectorAll('.page.active');
           if(active.length > 0) {
             var a = 0; do {
               active[a].classList.remove('active');
