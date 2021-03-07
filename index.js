@@ -41,7 +41,7 @@ String.prototype.router = async function (a) {
             rout.es.push(state);
           }
 
-          var active = document.querySelectorAll('.active[data-page]');
+          var active = document.querySelectorAll('page.active');
           if(active.length > 0) {
             var a = 0; do {
               active[a].classList.remove('active');
@@ -114,3 +114,4 @@ window.rout.ing = (GOT, n) => {
   return false;
 };
 window.rout.es = [];
+window.rout.er = page => { return dom.body.find('[data-page="'+(page ? page : dom.body.dataset.page)+'"]') };
