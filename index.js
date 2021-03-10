@@ -12,8 +12,8 @@ String.prototype.router = async function (a) {
 
   return new Promise(function (resolve, reject) {
     if (path) {
-      if(m && m.v) {
-        m.v(path).then((state) => { //console.log(state.path,url);
+      if(mvc && mvc.v) {
+        mvc.v(path).then((state) => { //console.log(state.path,url);
 
           var m = window.location.origin;
           var url = new URL(state.path, m);
